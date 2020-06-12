@@ -1,0 +1,8 @@
+.vscode
+download_daymetthredds*
+download_gistds*
+download_thredds
+download_podaac*
+error
+__pycache__
+*.log
