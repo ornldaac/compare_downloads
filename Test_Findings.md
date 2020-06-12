@@ -37,55 +37,59 @@ us to test the behavior of the service under different system load, e.g. fewer
 simultaneous requests v.s. more simultaneous requests being handled by the server.
 
 ## Findings
-### 1. THREDDS NCSS randomly returns incorrect data
+### 1. THREDDS NCSS could randomly return incorrect data
 We observed that NCSS randomly returned incorrect, or inconsistent, data 
 when the same request was repeated many times. This issue was observed in all 
 the THREDDS data servers we tested, including:
 *  ORNL DAAC THREDDS data servers
    * Instances setup to deliver Daymet data to AppEEARS
+      * https://thredds.daac.ornl.gov/thredds-daymet/ (actual data processing is handled by the three server nodes below)  
       * https://daymetthredds-dev.ornl.gov:8443/thredds-daymet/ (v4.6.14) 
       * https://daymetthredds2-dev.ornl.gov:8443/thredds-daymet/ (v4.6.1)
       * https://daymetthredds3-dev.ornl.gov:8443/thredds-daymet/ (v4.6.14)
    * Instances setup to distribute ORNL DAAC datasets
-      * https://thredds.daac.ornl.gov/thredds/ (supported by the two server nodes below)
+      * https://thredds.daac.ornl.gov/thredds/ (actual data processing is handled by the two server nodes below)
       * https://gistds1.ornl.gov:8443/thredds/ (v4.6.6)
       * https://gistds2.ornl.gov:8443/thredds/ (v4.6.6)
 *  PO.DAAC THREDDS data server
   * https://thredds.jpl.nasa.gov/thredds (v4.6.14)
 
-### 2. This incorrect data issue applies to both the csv and netcdf formats
-We observed this incorrect data issue for requests with data format to be either 
-csv or netcdf, specified by the accept param in the request URL
-*  accept=netcdf
-*  accept=csv
-
-Our tests didn't include other response formats (e.g. xml). It's possible that 
-this issue applies to other formats as well.
-
-
-### 3. Chance that this incorrect data issue happens increases as the server load goes up
-We observed the chance for this incorrect data issue to happen increased as we 
-increased the concurrently_level setting in the download_test.py script, which 
-means the test script sent more NCSS requests to the target THREDDS data server 
-at the same time, thus increasing the system load on the server. But this incorrect 
-data issue could happen even if the concurrent_level was set to be 1 (though it's 
-possible that the THREDDS data server was processing other requests not sent by 
-the test script).
-
-### 4. Result returned could contain data read from a data layer different from what's requested
+### 2. Result returned could contain data read from a data layer different from what's requested
 In some tests that resulted in incorrect data returned, we observed the 
 result returned contained data read in by THREDDS from a data layer different 
 from what was requested. See <q>Findings from specific test scenarios</q> for a detailed 
 description of this issue.
 
-### 5. Result returned could contain data extracted at a point different from what's requested
+### 3. Result returned could contain data extracted at a point different from what's requested
 In some tests that resulted in incorrect data returned, we observed the 
 result returned contained data extracted by THREDDS from a point (as defined by the latitude 
 and longitude coordinates) different from what was requested. See <q>Findings from specific 
 test scenarios</q> for a detailed description of this issue.
 
-### Appendix: Findings from specific test scenarios
-#### A.1 Test on ORNL DAAC Public THREDDS [2020-06-09 21:38] 
+### 4. Result returned could contain part (or none) of the time steps requested.
+In some tests that resulted in incorrect data returned, we observed that the result returned could
+be incomplete (e.g. 20 time steps returned instead of the requested 1320 time steps) or even contain 
+no data values at all. See <q>Findings from specific test scenarios</q> for a detailed description of this issue.
+
+### 5. This incorrect data issue applies to netcdf response format, but possibly to other formats as well.
+We observed this incorrect data issue for requests with netcdf data format, specified by the accept param in the request URL
+*  accept=netcdf
+
+We occasionally saw "truncated" result data with csv response format. But we are not clear if this issue is caused by THREDDS data server. 
+
+Our tests didn't include other response formats (e.g. xml). It's possible that 
+this issue applies to other formats as well.
+
+
+### 6. The incorrect data issue happens randomly and chance that this issue happens increases as the server load goes up
+This incorrect data issue happens randomly. Many of our tests resulted correct data returned.  
+We observed the chance for this incorrect data issue to happen increased as we 
+increased the concurrently_level setting in the download_test.py script, which 
+means the test script sent more NCSS requests to the target THREDDS data server 
+at the same time, thus increasing the system load on the server. 
+
+## Appendix: Findings from specific test scenarios
+### A.1 Test on ORNL DAAC Public THREDDS [2020-06-09 21:38] 
 **Request URLs used for testing**  
 20 NCSS request URLs were used in this test. These 20 request URLs are specified 
 in this JSON file: [gistds1_requests_ncss_ds1225_diffdata_netcdf.json](./Test_Results/gistds1_ds1225_diffdata.202006092138/gistds1_requests_ncss_ds1225_diffdata_netcdf.json)
@@ -109,10 +113,10 @@ data (i.e. data returned by request URLs #02 and #19) were not identical to the
 2020-06-09 21:38:09,365	ERROR	checksums ne ./download_gistds1_ds1225_diffdata/base02.nc eb996cfa3c161388d23e0a95416f3eed
 ```
 These 4 data files can be access following the links below:
-* [gistds1_ds1225_diffdata.202006092138base02.nc](./Test_Results/gistds1_ds1225_diffdata.202006092138/base02.nc)
-* [gistds1_ds1225_diffdata.202006092138test02.nc](./Test_Results/gistds1_ds1225_diffdata.202006092138/test02.nc)
-* [gistds1_ds1225_diffdata.202006092138base19.nc](./Test_Results/gistds1_ds1225_diffdata.202006092138/base19.nc)
-* [gistds1_ds1225_diffdata.202006092138test19.nc](./Test_Results/gistds1_ds1225_diffdata.202006092138/test19.nc)
+* [gistds1_ds1225_diffdata.202006092138/base02.nc](./Test_Results/gistds1_ds1225_diffdata.202006092138/base02.nc)
+* [gistds1_ds1225_diffdata.202006092138/test02.nc](./Test_Results/gistds1_ds1225_diffdata.202006092138/test02.nc)
+* [gistds1_ds1225_diffdata.202006092138/base19.nc](./Test_Results/gistds1_ds1225_diffdata.202006092138/base19.nc)
+* [gistds1_ds1225_diffdata.202006092138/test19.nc](./Test_Results/gistds1_ds1225_diffdata.202006092138/test19.nc)
 
 **Investigation of the incorrect data files**
 A NetCDF file created and returned by the NCSS' <q>Grid as Point Dataset</q> option
@@ -211,7 +215,7 @@ variables are different.
 ![NEP_in_base19.png](./Test_Results/gistds1_ds1225_diffdata.202006092138/NEP_in_base19.png "NEP in base19.png")
 ![GPP_in_test19.png](./Test_Results/gistds1_ds1225_diffdata.202006092138/GPP_in_test19.png "GPP in test19.png")
 
-#### A.2 Test on PO.DAAC THREDDS [2020-06-11 11:46] 
+### A.2 Test on PO.DAAC THREDDS [2020-06-11 11:46] 
 **Request URLs used for testing**  
 20 NCSS request URLs were used in this test. These 20 request URLs are specified 
 in this JSON file: [podaac_requests_ncss_samedata_netcdf.json](./Test_Results/podaac_samedata.202006111146/podaac_requests_ncss_samedata_netcdf.json)
@@ -333,3 +337,143 @@ It's interesting to see that **the wrong point location (lat=35.009165, lon=-130
 >     5052, 5122, 5091, _, 5097, _, 4947, 5096, _, 5074, 4962, 5185, _, 4802, 
 >     5243, 5341, 5372, 5375, 4142, _, _ ;
 ```
+### A.3 Test on ORNL DAAC Public THREDDS [2020-06-11 16:49] 
+**Request URLs used for testing**  
+20 NCSS request URLs were used in this test. These 20 request URLs are specified 
+in this JSON file: [gistds1_requests_ncss_ds1225_samedata_netcdf.json](./Test_Results/gistds1_ds1225_samedata.202006111649/gistds1_requests_ncss_ds1225_samedata_netcdf.json)
+
+All these 20 requests subset data from the same data layer (i.e. CLM4_BG1_Monthly_GPP.nc4). 
+But subset point location (specified by the latitude and longitude params) is unique among those 20 requests. 
+For example, the request URL #01, #03, and #18 are:
+* Request URL #01: https://gistds2.ornl.gov:8443/thredds/ncss/ornldaac/1225/CLM4_BG1_Monthly/CLM4_BG1_Monthly_GPP.nc4?var=GPP&time_start=1901-01-15T00:00:00Z&time_end=2010-12-15T00:00:00Z&accept=netcdf&latitude=39.769688&longitude=-99.536563 
+* Request URL #03: https://gistds2.ornl.gov:8443/thredds/ncss/ornldaac/1225/CLM4_BG1_Monthly/CLM4_BG1_Monthly_GPP.nc4?var=GPP&time_start=1901-01-15T00:00:00Z&time_end=2010-12-15T00:00:00Z&accept=netcdf&latitude=-3.370313&longitude=-62.238438
+* Request URL #18: https://gistds2.ornl.gov:8443/thredds/ncss/ornldaac/1225/CLM4_BG1_Monthly/CLM4_BG1_Monthly_GPP.nc4?var=GPP&time_start=1901-01-15T00:00:00Z&time_end=2010-12-15T00:00:00Z&accept=netcdf&latitude=48.757187&longitude=84.707188
+
+**Testing**  
+The download_test.py script was run multiple times on this set of 20 request URLs. 
+The concurrent_level was set to 4. In one of the runs, we observed many <q>test</q> 
+data were not identical to the <q>base</q> data. In addition, there was one test file 
+returned from THREDDS with no data values included in the file.   
+Below is the messages printed by the download_test.py.  
+
+```
+$ python3 download_test.py | grep ERROR
+2020-06-11 16:49:53,135	ERROR	checksums ne ./download_gistds1_ds1225_samedata/base01.nc 7755f9045581074e2cd610232c18467d
+2020-06-11 16:49:53,154	ERROR	    storing errors in ./error/2020-06-11-16-49-02/./download_gistds1_ds1225_samedata
+2020-06-11 16:49:53,198	ERROR	checksums ne ./download_gistds1_ds1225_samedata/base20.nc 0459862226b320aaddce67d8242fdc7e
+2020-06-11 16:49:53,199	ERROR	    storing errors in ./error/2020-06-11-16-49-02/./download_gistds1_ds1225_samedata
+2020-06-11 16:49:53,707	ERROR	checksums ne ./download_gistds1_ds1225_samedata/base16.nc 0401cf0603cba85fec7b26dcf53376bd
+2020-06-11 16:49:53,716	ERROR	    storing errors in ./error/2020-06-11-16-49-02/./download_gistds1_ds1225_samedata
+2020-06-11 16:49:53,837	ERROR	checksums ne ./download_gistds1_ds1225_samedata/base02.nc 265f39a2ac7edda82a4fe00910b949da
+2020-06-11 16:49:53,838	ERROR	    storing errors in ./error/2020-06-11-16-49-02/./download_gistds1_ds1225_samedata
+2020-06-11 16:49:54,076	ERROR	checksums ne ./download_gistds1_ds1225_samedata/base11.nc 6711a8d5a558874c77e8dcdf49b9c786
+2020-06-11 16:49:54,079	ERROR	    storing errors in ./error/2020-06-11-16-49-02/./download_gistds1_ds1225_samedata
+2020-06-11 16:49:54,506	ERROR	checksums ne ./download_gistds1_ds1225_samedata/base17.nc 1e5f2893d69a55bee5b6d1e9d5c461a7
+2020-06-11 16:49:54,518	ERROR	    storing errors in ./error/2020-06-11-16-49-02/./download_gistds1_ds1225_samedata
+2020-06-11 16:49:54,925	ERROR	checksums ne ./download_gistds1_ds1225_samedata/base07.nc 2319b3dfae34ed5e6d2505dfc96bcb31
+2020-06-11 16:49:54,927	ERROR	    storing errors in ./error/2020-06-11-16-49-02/./download_gistds1_ds1225_samedata
+2020-06-11 16:49:55,510	ERROR	checksums ne ./download_gistds1_ds1225_samedata/base03.nc 34fac8cbc96e7e66ba003230334ca05c
+2020-06-11 16:49:55,511	ERROR	    storing errors in ./error/2020-06-11-16-49-02/./download_gistds1_ds1225_samedata
+2020-06-11 16:49:56,554	ERROR	checksums ne ./download_gistds1_ds1225_samedata/base10.nc 6d01104bf21df6303419188f078c09a6
+2020-06-11 16:49:56,555	ERROR	    storing errors in ./error/2020-06-11-16-49-02/./download_gistds1_ds1225_samedata
+2020-06-11 16:49:56,948	ERROR	checksums ne ./download_gistds1_ds1225_samedata/base09.nc 38b9ee5def4c22c1ecce4ef2d8bcab0d
+2020-06-11 16:49:56,949	ERROR	    storing errors in ./error/2020-06-11-16-49-02/./download_gistds1_ds1225_samedata
+2020-06-11 16:49:57,432	ERROR	checksums ne ./download_gistds1_ds1225_samedata/base08.nc fe25118e0d9037133bc9f9de34389d84
+2020-06-11 16:49:57,433	ERROR	    storing errors in ./error/2020-06-11-16-49-02/./download_gistds1_ds1225_samedata
+2020-06-11 16:49:58,057	ERROR	checksums ne ./download_gistds1_ds1225_samedata/base04.nc 8354a3226f1274434faa0e9500f4ab96
+2020-06-11 16:49:58,058	ERROR	    storing errors in ./error/2020-06-11-16-49-02/./download_gistds1_ds1225_samedata
+2020-06-11 16:49:58,264	ERROR	checksums ne ./download_gistds1_ds1225_samedata/base14.nc 173b3a292b3903e615d87084d39e746c
+2020-06-11 16:49:58,266	ERROR	    storing errors in ./error/2020-06-11-16-49-02/./download_gistds1_ds1225_samedata
+Traceback (most recent call last):
+  File "download_test.py", line 84, in <module>
+    LOGGER,
+  File "/usr/lib64/python3.6/asyncio/base_events.py", line 484, in run_until_complete
+    return future.result()
+  File "/daacwork/ywi/thredds/daymet_tds_performance_test/compare_downloads/download_common.py", line 219, in download_test_files
+    await asyncio.gather(*download_tasks, loop=loop)
+  File "/daacwork/ywi/thredds/daymet_tds_performance_test/compare_downloads/download_common.py", line 161, in _download_file
+    raise e
+  File "/daacwork/ywi/thredds/daymet_tds_performance_test/compare_downloads/download_common.py", line 150, in _download_file
+    validator()
+  File "/daacwork/ywi/thredds/daymet_tds_performance_test/compare_downloads/download_common.py", line 54, in my_test_validator
+    netcdf_test_validator(url, basefilepath, testfilepath, LOGGER)
+  File "/daacwork/ywi/thredds/daymet_tds_performance_test/compare_downloads/download_common.py", line 102, in netcdf_test_validator
+    f"Variable {key} in {testfilepath} does not contain any data, try downloading again"
+RuntimeError: Variable time in ./download_gistds1_ds1225_samedata/test18.nc does not contain any data, try downloading again
+```
+Data files from this test can be access here from [gistds1_ds1225_samedata.202006111649](./Test_Results/gistds1_ds1225_samedata.202006111649)
+
+**Investigation of the incorrect data files**  
+**Issue with test01.nc**  
+Difference between test01.nc and base01.nc lies in 1) the different number of time steps returned and 2) the different point location at which the data values were extracted.  
+For test01.nc, THREDDS returned only part of the data requested (22 time steps returned instead of 1320) on a wrong point location.   
+```
+[ywi@daac-proc download_gistds1_ds1225_samedata.202006111649]$ diff <(ncdump base01.nc) <(ncdump test01.nc)
+1c1
+< netcdf base01 {
+---
+> netcdf test01 {
+3c3
+< 	obs = UNLIMITED ; // (1320 currently)
+---
+> 	obs = UNLIMITED ; // (22 currently)
+6c6
+< 	station_description_strlen = 42 ;
+---
+> 	station_description_strlen = 43 ;
+38c38
+< 		:time_coverage_end = "2010-12-15T00:00:00Z" ;
+---
+> 		:time_coverage_end = "1902-10-15T00:00:00Z" ;
+46c46
+<  latitude = 39.769688 ;
+---
+>  latitude = 42.465937 ;
+48c48
+<  longitude = -99.536563 ;
+---
+>  longitude = -101.783437 ;
+54c54
+<   "Grid Point at lat/lon=39.769688,-99.536563" ;
+---
+>   "Grid Point at lat/lon=42.465937,-101.783437" ;
+```
+**Issue with test03.nc**  
+Difference between test03.nc and base03.nc lies in the different number of time steps returned.    
+For test03.nc, THREDDS returned only part of the data requested (91 time steps returned instead of 1320), but the point location was correct.
+```
+[ywi@daac-proc download_gistds1_ds1225_samedata.202006111649]$ diff <(ncdump base03.nc) <(ncdump test03.nc)
+1c1
+< netcdf base03 {
+---
+> netcdf test03 {
+3c3
+< 	obs = UNLIMITED ; // (1320 currently)
+---
+> 	obs = UNLIMITED ; // (91 currently)
+38c38
+< 		:time_coverage_end = "2010-12-15T00:00:00Z" ;
+---
+> 		:time_coverage_end = "1908-07-15T00:00:00Z" ;
+```
+**Issue with test18.nc**  
+The returned test18.nc contained no data value at all.
+```
+[ywi@daac-proc download_gistds1_ds1225_samedata.202006111649]$ diff <(ncdump base18.nc) <(ncdump test18.nc)
+1c1
+< netcdf base18 {
+---
+> netcdf test18 {
+3c3
+<       obs = UNLIMITED ; // (1320 currently)
+---
+>       obs = UNLIMITED ; // (0 currently)
+37,38c37,38
+<               :time_coverage_start = "1901-01-15T00:00:00Z" ;
+<               :time_coverage_end = "2010-12-15T00:00:00Z" ;
+---
+>               :time_coverage_start = "2020-06-11T20:49:58.083Z" ;
+>               :time_coverage_end = "2020-06-11T20:49:58.083Z" ;
+55,458d54
+
+```    

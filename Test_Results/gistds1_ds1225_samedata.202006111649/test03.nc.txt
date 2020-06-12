@@ -1,0 +1,91 @@
+netcdf test03 {
+dimensions:
+	obs = UNLIMITED ; // (91 currently)
+	station = 1 ;
+	station_id_strlen = 9 ;
+	station_description_strlen = 42 ;
+variables:
+	double latitude(station) ;
+		latitude:units = "degrees_north" ;
+		latitude:long_name = "station latitude" ;
+	double longitude(station) ;
+		longitude:units = "degrees_east" ;
+		longitude:long_name = "station longitude" ;
+	char station_id(station, station_id_strlen) ;
+		station_id:long_name = "station identifier" ;
+		station_id:cf_role = "timeseries_id" ;
+	char station_description(station, station_description_strlen) ;
+		station_description:long_name = "station description" ;
+		station_description:standard_name = "platform_name" ;
+	double time(obs) ;
+		time:units = "days since 1700-01-01 00:00:00" ;
+		time:calendar = "proleptic_gregorian" ;
+		time:standard_name = "time" ;
+		time:long_name = "Time middle averaging period" ;
+	int stationIndex(obs) ;
+		stationIndex:long_name = "station index for this observation record" ;
+		stationIndex:instance_dimension = "station" ;
+	float GPP(obs) ;
+		GPP:units = "kg C m-2 s-1" ;
+		GPP:long_name = "Gross Primary Productivity" ;
+		GPP:coordinates = "latitude longitude time" ;
+
+// global attributes:
+		:Conventions = "CF-1.6" ;
+		:history = "Written by CFPointWriter" ;
+		:title = "Extract Points data from Grid file /daacftp/nacp/NACP_MsTMIP_TBMO/data/CLM4_BG1_Monthly/CLM4_BG1_Monthly_GPP.nc4" ;
+		:time_coverage_start = "1901-01-15T00:00:00Z" ;
+		:time_coverage_end = "1908-07-15T00:00:00Z" ;
+		:geospatial_lat_min = -3.370813 ;
+		:geospatial_lat_max = -3.369813 ;
+		:geospatial_lon_min = -62.238938 ;
+		:geospatial_lon_max = -62.237938 ;
+		:featureType = "timeSeries" ;
+data:
+
+ latitude = -3.370313 ;
+
+ longitude = -62.238438 ;
+
+ station_id =
+  "GridPoint" ;
+
+ station_description =
+  "Grid Point at lat/lon=-3.370313,-62.238438" ;
+
+ time = 73427, 73458, 73486, 73517, 73547, 73578, 73608, 73639, 73670, 73700, 
+    73731, 73761, 73792, 73823, 73851, 73882, 73912, 73943, 73973, 74004, 
+    74035, 74065, 74096, 74126, 74157, 74188, 74216, 74247, 74277, 74308, 
+    74338, 74369, 74400, 74430, 74461, 74491, 74522, 74553, 74582, 74613, 
+    74643, 74674, 74704, 74735, 74766, 74796, 74827, 74857, 74888, 74919, 
+    74947, 74978, 75008, 75039, 75069, 75100, 75131, 75161, 75192, 75222, 
+    75253, 75284, 75312, 75343, 75373, 75404, 75434, 75465, 75496, 75526, 
+    75557, 75587, 75618, 75649, 75677, 75708, 75738, 75769, 75799, 75830, 
+    75861, 75891, 75922, 75952, 75983, 76014, 76043, 76074, 76104, 76135, 
+    76165 ;
+
+ stationIndex = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ;
+
+ GPP = 1.463845e-07, 1.466853e-07, 1.485626e-07, 1.472993e-07, 1.470734e-07, 
+    1.46003e-07, 1.457374e-07, 1.434295e-07, 1.393282e-07, 1.475962e-07, 
+    1.479909e-07, 1.485694e-07, 1.504367e-07, 1.501267e-07, 1.518368e-07, 
+    1.502556e-07, 1.497595e-07, 1.485774e-07, 1.481083e-07, 1.453883e-07, 
+    1.409867e-07, 1.492292e-07, 1.49718e-07, 1.503089e-07, 1.523566e-07, 
+    1.519384e-07, 1.535668e-07, 1.517957e-07, 1.511835e-07, 1.49819e-07, 
+    1.493427e-07, 1.466367e-07, 1.419867e-07, 1.501676e-07, 1.506039e-07, 
+    1.511726e-07, 1.53109e-07, 1.522234e-07, 1.539321e-07, 1.521098e-07, 
+    1.515869e-07, 1.499943e-07, 1.497989e-07, 1.468857e-07, 1.41796e-07, 
+    1.511501e-07, 1.514732e-07, 1.518776e-07, 1.540359e-07, 1.53461e-07, 
+    1.550284e-07, 1.531957e-07, 1.526665e-07, 1.513178e-07, 1.506883e-07, 
+    1.476727e-07, 1.427848e-07, 1.512863e-07, 1.518433e-07, 1.521275e-07, 
+    1.540821e-07, 1.537063e-07, 1.552143e-07, 1.532898e-07, 1.526848e-07, 
+    1.511234e-07, 1.50718e-07, 1.475863e-07, 1.421862e-07, 1.50712e-07, 
+    1.514858e-07, 1.523982e-07, 1.542038e-07, 1.534894e-07, 1.550697e-07, 
+    1.534142e-07, 1.52696e-07, 1.511998e-07, 1.50545e-07, 1.477826e-07, 
+    1.425688e-07, 1.509692e-07, 1.517564e-07, 1.525141e-07, 1.544096e-07, 
+    1.540138e-07, 1.555629e-07, 1.536048e-07, 1.530867e-07, 1.515817e-07, 
+    1.512726e-07 ;
+}

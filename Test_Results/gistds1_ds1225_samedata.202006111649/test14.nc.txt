@@ -1,0 +1,98 @@
+netcdf test14 {
+dimensions:
+	obs = UNLIMITED ; // (115 currently)
+	station = 1 ;
+	station_id_strlen = 9 ;
+	station_description_strlen = 40 ;
+variables:
+	double latitude(station) ;
+		latitude:units = "degrees_north" ;
+		latitude:long_name = "station latitude" ;
+	double longitude(station) ;
+		longitude:units = "degrees_east" ;
+		longitude:long_name = "station longitude" ;
+	char station_id(station, station_id_strlen) ;
+		station_id:long_name = "station identifier" ;
+		station_id:cf_role = "timeseries_id" ;
+	char station_description(station, station_description_strlen) ;
+		station_description:long_name = "station description" ;
+		station_description:standard_name = "platform_name" ;
+	double time(obs) ;
+		time:units = "days since 1700-01-01 00:00:00" ;
+		time:calendar = "proleptic_gregorian" ;
+		time:standard_name = "time" ;
+		time:long_name = "Time middle averaging period" ;
+	int stationIndex(obs) ;
+		stationIndex:long_name = "station index for this observation record" ;
+		stationIndex:instance_dimension = "station" ;
+	float GPP(obs) ;
+		GPP:units = "kg C m-2 s-1" ;
+		GPP:long_name = "Gross Primary Productivity" ;
+		GPP:coordinates = "latitude longitude time" ;
+
+// global attributes:
+		:Conventions = "CF-1.6" ;
+		:history = "Written by CFPointWriter" ;
+		:title = "Extract Points data from Grid file /daacftp/nacp/NACP_MsTMIP_TBMO/data/CLM4_BG1_Monthly/CLM4_BG1_Monthly_GPP.nc4" ;
+		:time_coverage_start = "1901-01-15T00:00:00Z" ;
+		:time_coverage_end = "1910-07-15T00:00:00Z" ;
+		:geospatial_lat_min = 46.959188 ;
+		:geospatial_lat_max = 46.960188 ;
+		:geospatial_lon_min = 8.312937 ;
+		:geospatial_lon_max = 8.313937 ;
+		:featureType = "timeSeries" ;
+data:
+
+ latitude = 46.959688 ;
+
+ longitude = 8.313437 ;
+
+ station_id =
+  "GridPoint" ;
+
+ station_description =
+  "Grid Point at lat/lon=46.959688,8.313437" ;
+
+ time = 73427, 73458, 73486, 73517, 73547, 73578, 73608, 73639, 73670, 73700, 
+    73731, 73761, 73792, 73823, 73851, 73882, 73912, 73943, 73973, 74004, 
+    74035, 74065, 74096, 74126, 74157, 74188, 74216, 74247, 74277, 74308, 
+    74338, 74369, 74400, 74430, 74461, 74491, 74522, 74553, 74582, 74613, 
+    74643, 74674, 74704, 74735, 74766, 74796, 74827, 74857, 74888, 74919, 
+    74947, 74978, 75008, 75039, 75069, 75100, 75131, 75161, 75192, 75222, 
+    75253, 75284, 75312, 75343, 75373, 75404, 75434, 75465, 75496, 75526, 
+    75557, 75587, 75618, 75649, 75677, 75708, 75738, 75769, 75799, 75830, 
+    75861, 75891, 75922, 75952, 75983, 76014, 76043, 76074, 76104, 76135, 
+    76165, 76196, 76227, 76257, 76288, 76318, 76349, 76380, 76408, 76439, 
+    76469, 76500, 76530, 76561, 76592, 76622, 76653, 76683, 76714, 76745, 
+    76773, 76804, 76834, 76865, 76895 ;
+
+ stationIndex = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ;
+
+ GPP = 7.892471e-09, 4.527187e-09, 1.375248e-08, 2.542745e-08, 5.306363e-08, 
+    7.542771e-08, 7.431139e-08, 6.891015e-08, 5.894332e-08, 4.107053e-08, 
+    2.424341e-08, 1.564102e-08, 1.012445e-08, 1.366843e-08, 2.36405e-08, 
+    2.784407e-08, 5.125792e-08, 6.028429e-08, 6.165712e-08, 6.024401e-08, 
+    5.154014e-08, 3.582958e-08, 1.911988e-08, 9.858134e-09, 6.206835e-09, 
+    1.161196e-08, 3.519984e-08, 4.45987e-08, 6.181678e-08, 7.098816e-08, 
+    7.274308e-08, 7.0395e-08, 5.796189e-08, 4.142793e-08, 2.440765e-08, 
+    1.229315e-08, 7.005837e-09, 1.137714e-08, 3.44758e-08, 4.856756e-08, 
+    6.777089e-08, 7.825594e-08, 7.355344e-08, 6.53437e-08, 5.847771e-08, 
+    4.110898e-08, 2.493464e-08, 1.633646e-08, 7.41396e-09, 7.660268e-09, 
+    1.501182e-08, 2.34429e-08, 5.548714e-08, 7.247965e-08, 7.101082e-08, 
+    7.019774e-08, 5.904659e-08, 3.961462e-08, 2.67189e-08, 1.651953e-08, 
+    9.814428e-09, 1.11373e-08, 2.467702e-08, 2.199716e-08, 4.658956e-08, 
+    5.464265e-08, 5.593374e-08, 5.157954e-08, 4.215786e-08, 3.142762e-08, 
+    1.976684e-08, 9.232172e-09, 4.668912e-09, 6.958733e-09, 3.114755e-08, 
+    4.301776e-08, 5.715389e-08, 6.815738e-08, 6.640416e-08, 6.268492e-08, 
+    5.116955e-08, 3.711271e-08, 2.321095e-08, 1.378236e-08, 5.926629e-09, 
+    9.699536e-09, 3.174108e-08, 4.38708e-08, 6.210337e-08, 7.293841e-08, 
+    7.146345e-08, 6.70906e-08, 5.733548e-08, 3.991888e-08, 2.553442e-08, 
+    1.538082e-08, 6.727823e-09, 5.35287e-09, 1.124232e-08, 1.987767e-08, 
+    4.841358e-08, 6.939465e-08, 6.907585e-08, 6.646298e-08, 5.561294e-08, 
+    4.1158e-08, 2.6662e-08, 1.84892e-08, 1.044286e-08, 1.606898e-08, 
+    2.016256e-08, 2.581939e-08, 4.682442e-08, 5.562067e-08, 5.429946e-08 ;
+}

@@ -28,44 +28,15 @@ if __name__ == "__main__":
     LOGGER.debug("Started at " + now.strftime("%Y-%m-%d %H:%M:%S"))
 
     test_files = [
-        "daymetthredds-dev_requests_ncss_netcdf.json",
-        "daymetthredds-dev_requests_ncss_csv.json",
-        "daymetthredds2-dev_requests_ncss_netcdf.json",
-        "daymetthredds2-dev_requests_ncss_csv.json",
-        "daymetthredds3-dev_requests_ncss_netcdf.json",
-        "daymetthredds3-dev_requests_ncss_csv.json",
-        "appeears_requests_ncss_netcdf.json",
-        "appeears_requests_ncss_csv.json",
-        "gistds1_requests_ncss_netcdf.json",
-        "gistds1_requests_ncss_csv.json",
-        "gistds2_requests_ncss_netcdf.json",
-        "gistds2_requests_ncss_csv.json",
-        "thredds_requests_ncss_netcdf.json",
-        "thredds_requests_ncss_csv.json",
-        "podaac_requests_ncss_samedata_netcdf.json",
+        "ornldaac_requests_ncss_csv.json",
+        "ornldaac_requests_ncss_netcdf.json",
+        "ornldaac_requests_ncss_ds1225_diffdata_csv.json",
+        "ornldaac_requests_ncss_ds1225_diffdata_netcdf.json",
+        "ornldaac_requests_ncss_ds1225_samedata_csv.json",
+        "ornldaac_requests_ncss_ds1225_samedata_netcdf.json",
         "podaac_requests_ncss_samedata_csv.json",
-        "gistds1_requests_ncss_ds1225_samedata_csv.json",
-        "gistds1_requests_ncss_ds1225_samedata_netcdf.json",
-        "gistds1_requests_ncss_ds1225_diffdata_csv.json",
-        "gistds1_requests_ncss_ds1225_diffdata_netcdf.json",
-        "gistds2_requests_ncss_ds1225_samedata_csv.json",
-        "gistds2_requests_ncss_ds1225_samedata_netcdf.json",
+        "podaac_requests_ncss_samedata_netcdf.json",
     ]
-
-    #        "daymetthredds-dev_requests_ncss_netcdf.json",
-    #        "daymetthredds-dev_requests_ncss_csv.json",
-    #        "daymetthredds2-dev_requests_ncss_netcdf.json",
-    #        "daymetthredds2-dev_requests_ncss_csv.json",
-    #        "daymetthredds3-dev_requests_ncss_netcdf.json",
-    #        "daymetthredds3-dev_requests_ncss_csv.json",
-    #        "appeears_requests_ncss_netcdf.json",
-    #        "appeears_requests_ncss_csv.json",
-    #        "gistds1_requests_ncss_netcdf.json",
-    #        "gistds1_requests_ncss_csv.json",
-    #        "gistds2_requests_ncss_netcdf.json",
-    #        "gistds2_requests_ncss_csv.json",
-    #        "thredds_requests_ncss_netcdf.json",
-    #        "thredds_requests_ncss_csv.json",
 
     # load file containing the list of download URLs, destination filenames, and layers
     current_dir = os.path.dirname(__file__)
@@ -80,10 +51,7 @@ if __name__ == "__main__":
             download_files = json.load(json_file)
 
         # set the desired concurrency level
-        if test_file.startswith("thredds_requests") or test_file.startswith("gistds"):
-            concurrency_level = 2
-        else:
-            concurrency_level = 10
+        concurrency_level = 2
 
         LOGGER.info(f"Concurrency level is {concurrency_level}")
 

@@ -1,0 +1,78 @@
+netcdf test17 {
+dimensions:
+	obs = UNLIMITED ; // (51 currently)
+	station = 1 ;
+	station_id_strlen = 9 ;
+	station_description_strlen = 41 ;
+variables:
+	double latitude(station) ;
+		latitude:units = "degrees_north" ;
+		latitude:long_name = "station latitude" ;
+	double longitude(station) ;
+		longitude:units = "degrees_east" ;
+		longitude:long_name = "station longitude" ;
+	char station_id(station, station_id_strlen) ;
+		station_id:long_name = "station identifier" ;
+		station_id:cf_role = "timeseries_id" ;
+	char station_description(station, station_description_strlen) ;
+		station_description:long_name = "station description" ;
+		station_description:standard_name = "platform_name" ;
+	double time(obs) ;
+		time:units = "days since 1700-01-01 00:00:00" ;
+		time:calendar = "proleptic_gregorian" ;
+		time:standard_name = "time" ;
+		time:long_name = "Time middle averaging period" ;
+	int stationIndex(obs) ;
+		stationIndex:long_name = "station index for this observation record" ;
+		stationIndex:instance_dimension = "station" ;
+	float GPP(obs) ;
+		GPP:units = "kg C m-2 s-1" ;
+		GPP:long_name = "Gross Primary Productivity" ;
+		GPP:coordinates = "latitude longitude time" ;
+
+// global attributes:
+		:Conventions = "CF-1.6" ;
+		:history = "Written by CFPointWriter" ;
+		:title = "Extract Points data from Grid file /daacftp/nacp/NACP_MsTMIP_TBMO/data/CLM4_BG1_Monthly/CLM4_BG1_Monthly_GPP.nc4" ;
+		:time_coverage_start = "1901-01-15T00:00:00Z" ;
+		:time_coverage_end = "1905-03-15T00:00:00Z" ;
+		:geospatial_lat_min = 51.452938 ;
+		:geospatial_lat_max = 51.453938 ;
+		:geospatial_lon_min = 40.667938 ;
+		:geospatial_lon_max = 40.668938 ;
+		:featureType = "timeSeries" ;
+data:
+
+ latitude = 51.453438 ;
+
+ longitude = 40.668438 ;
+
+ station_id =
+  "GridPoint" ;
+
+ station_description =
+  "Grid Point at lat/lon=51.453438,40.668438" ;
+
+ time = 73427, 73458, 73486, 73517, 73547, 73578, 73608, 73639, 73670, 73700, 
+    73731, 73761, 73792, 73823, 73851, 73882, 73912, 73943, 73973, 74004, 
+    74035, 74065, 74096, 74126, 74157, 74188, 74216, 74247, 74277, 74308, 
+    74338, 74369, 74400, 74430, 74461, 74491, 74522, 74553, 74582, 74613, 
+    74643, 74674, 74704, 74735, 74766, 74796, 74827, 74857, 74888, 74919, 
+    74947 ;
+
+ stationIndex = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0 ;
+
+ GPP = 1.764458e-10, 4.1608e-10, 1.209526e-09, 3.69461e-09, 4.470863e-08, 
+    3.694168e-08, 1.016411e-08, 2.182031e-08, 5.701335e-09, 7.455275e-09, 
+    4.020719e-09, 3.45886e-10, 2.208571e-10, 3.868492e-10, 1.066293e-09, 
+    2.783092e-09, 2.224225e-08, 4.201651e-08, 4.263116e-08, 2.965929e-08, 
+    1.930941e-08, 8.795479e-09, 2.050602e-09, 1.935686e-10, 1.967866e-10, 
+    4.882155e-10, 1.129423e-09, 6.912642e-09, 5.516024e-08, 5.80538e-08, 
+    3.881546e-08, 3.240714e-08, 2.047538e-08, 1.714444e-08, 7.067809e-09, 
+    4.840684e-10, 1.53139e-10, 5.367389e-10, 8.834706e-10, 3.015995e-09, 
+    2.840072e-08, 3.884811e-08, 3.417293e-08, 3.182044e-08, 5.448878e-09, 
+    8.410641e-09, 7.368027e-09, 9.389607e-10, 8.393535e-11, 2.431718e-10, 
+    5.946552e-10 ;
+}
