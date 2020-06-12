@@ -1,0 +1,3 @@
+aiohttp
+netCDF4
+requests
